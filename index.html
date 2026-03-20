@@ -36,12 +36,14 @@
 .about img:hover{transform:scale(1.05)}
 
 .email-box{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;animation:fadeUp 1s ease}
-input{padding:12px;border-radius:8px;border:none;width:260px}
+input{padding:12px;border-radius:8px;border:none;width:220px}
 
 footer{text-align:center;padding:20px;background:#140909;opacity:.9}
 
 .whatsapp{position:fixed;bottom:20px;right:20px;background:#25D366;color:#fff;padding:14px 16px;border-radius:50px;text-decoration:none;font-weight:600;box-shadow:0 8px 20px rgba(0,0,0,.4);transition:0.3s}
 .whatsapp:hover{transform:scale(1.1)}
+
+.bank-transfer{margin-top:20px; padding:16px; background:#1a1212; border-radius:12px; text-align:center;}
 
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 
@@ -59,35 +61,59 @@ footer{text-align:center;padding:20px;background:#140909;opacity:.9}
   </nav>
 </header><section class="hero">
   <h2>23 Flavors. One Legendary Taste.</h2>
-  <p>Premium refreshment. Built for bold people.</p>
-  <div class="cta">
-    <button class="btn primary" onclick="buyNow()">Buy Now</button>
+  <p>Premium refreshment. Built for bold people.</p>  <div style="text-align:center; margin-bottom:12px;">
+    <input type="text" id="customerName" placeholder="Enter your name">
+    <input type="email" id="customerEmail" placeholder="Enter your email">
+  </div>  <div class="cta">
+    <button class="btn primary" onclick="payNow(1000)">Pay ₦1,000</button>
     <button class="btn ghost" onclick="scrollToProducts()">Explore</button>
   </div>
 </section><section id="products" class="section">
-  <h2>Our Drinks</h2>
+  <h2>Our Drinks Gallery</h2>
   <div class="grid">
     <div class="card">
       <img src="https://images.unsplash.com/photo-1600891964599-f61ba0e24092">
       <div class="p">
         <h3>Classic</h3>
         <p>The original bold taste.</p>
+        <button class="btn primary" onclick="payNow(1000)">Pay ₦1,000</button>
       </div>
-    </div>
-    <div class="card">
-      <img src="https://images.unsplash.com/photo-1629203851122-3726ecdf080e">
-      <div class="p">
-        <h3>Cherry</h3>
-        <p>Sweet cherry twist.</p>
-      </div>
-    </div>
-    <div class="card">
-      <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b">
-      <div class="p">
-        <h3>Zero Sugar</h3>
-        <p>No sugar, full flavor.</p>
-      </div>
-    </div>
+    </div><div class="card">
+  <img src="https://images.unsplash.com/photo-1629203851122-3726ecdf080e">
+  <div class="p">
+    <h3>Cherry</h3>
+    <p>Sweet cherry twist.</p>
+    <button class="btn primary" onclick="payNow(1000)">Pay ₦1,000</button>
+  </div>
+</div>
+
+<div class="card">
+  <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b">
+  <div class="p">
+    <h3>Zero Sugar</h3>
+    <p>No sugar, full flavor.</p>
+    <button class="btn primary" onclick="payNow(1000)">Pay ₦1,000</button>
+  </div>
+</div>
+
+<div class="card">
+  <img src="https://images.unsplash.com/photo-1590080870673-f73f62cf4b3b">
+  <div class="p">
+    <h3>Hollandia Yoghurt</h3>
+    <p>Rich and creamy refreshment.</p>
+    <button class="btn primary" onclick="payNow(1200)">Pay ₦1,200</button>
+  </div>
+</div>
+
+<div class="card">
+  <img src="https://images.unsplash.com/photo-1601933478753-57cf1e8e6a47">
+  <div class="p">
+    <h3>Fanta</h3>
+    <p>Sweet orange refreshment.</p>
+    <button class="btn primary" onclick="payNow(900)">Pay ₦900</button>
+  </div>
+</div>
+
   </div>
 </section><section id="about" class="section">
   <div class="about">
@@ -103,15 +129,64 @@ footer{text-align:center;padding:20px;background:#140909;opacity:.9}
   <div class="email-box">
     <input type="email" placeholder="Enter your email" id="email">
     <button class="btn primary" onclick="subscribe()">Subscribe</button>
+  </div>  <div class="bank-transfer">
+    <h3>Pay via Bank Transfer</h3>
+    <p>Account Name: Obe Francis Adogo</p>
+    <p>Bank: Union Bank</p>
+    <p>Account Number: 0228743243</p>
+    <p>After payment, send proof to WhatsApp: <a href="https://wa.me/2349024794948" target="_blank" style="color:#25D366;">Chat Now</a></p>
   </div>
 </section><footer>
-  <p>© 2026 Outreach. All rights reserved.</p>
+  <p>© 2026 Outreach. All rights reserved.</p>  <!-- Share button -->  <div style="margin-top:10px;">
+    <button onclick="shareWebsite()" class="btn primary">Share This Website</button>
+  </div>
 </footer><a class="whatsapp" href="https://wa.me/2349024794948" target="_blank">Chat on WhatsApp</a>
 
-<script>
-  function buyNow(){
-    window.open('https://wa.me/2349024794948?text=I%20want%20to%20buy%20Outreach','_blank')
+<script src="https://js.paystack.co/v1/inline.js"></script><script>
+  function payNow(amount) {
+    var handler = PaystackPop.setup({
+      key: 'YOUR_PUBLIC_KEY',
+      email: document.getElementById('customerEmail').value,
+      amount: amount * 100,
+      currency: 'NGN',
+      ref: 'Outreach-' + document.getElementById('customerName').value + '-' + Math.floor(Math.random() * 1000000 + 1),
+      callback: function(response){
+        alert('Payment successful. Reference: ' + response.reference);
+      },
+      onClose: function(){
+        alert('Transaction was not completed, window closed.');
+      }
+    });
+    handler.openIframe();
   }
+
+  function shareWebsite() {
+    const websiteUrl = window.location.href;
+    const shareText = 'Check out this amazing Outreach website!';
+
+    if (navigator.share) {
+      navigator.share({
+        title: 'Outreach Website',
+        text: shareText,
+        url: websiteUrl,
+      })
+      .then(() => console.log('Shared successfully'))
+      .catch((err) => console.log('Error sharing', err));
+    } else {
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(websiteUrl)
+        .then(() => alert('Website link copied to clipboard! Paste it anywhere to share.'))
+        .catch(() => fallbackPrompt());
+      } else {
+        fallbackPrompt();
+      }
+
+      function fallbackPrompt() {
+        window.prompt("Copy this link to share the website:", websiteUrl);
+      }
+    }
+  }
+
   function scrollToProducts(){
     document.getElementById('products').scrollIntoView({behavior:'smooth'})
   }
